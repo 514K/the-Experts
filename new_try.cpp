@@ -25,11 +25,6 @@ int main(){
     }
     cout << endl;
     
-    
-    
-    
-    
-    
 bool BreackCounter = true;
 while(BreackCounter)
 {
@@ -44,8 +39,6 @@ while(BreackCounter)
         }
     }
     //cout << endl;
-    
-    
     
     int countNew = 0, countOld = 0;
     for (int i = 0; i < exp; i++){
@@ -89,8 +82,6 @@ while(BreackCounter)
     }
     //cout << endl;
     
-
-
     for (int i = 0; i < dir; i++){
         for (int ii = 0; ii < dir; ii++){
             if (arr[minI][i] == quests[ii]) quests[ii] = 0;
@@ -111,8 +102,6 @@ while(BreackCounter)
         }
     }
     
-    
-    
     mans[minI] = 0;
     //cout << endl;
     
@@ -120,16 +109,7 @@ while(BreackCounter)
     delete []T;
     
 }
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
+     
     for (int i = 0; i < exp; i++) delete []arr[i];
     delete []arr;
     delete []mans;
