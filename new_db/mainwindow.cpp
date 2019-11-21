@@ -95,6 +95,8 @@ void MainWindow::on_pbRes_clicked()
         quest.exec();
         max = -1;
         min = 2;
+        CountForExp = 1;
+        the_expert = 0;
         mModel->select();
     }
     else mModel->select();
@@ -114,8 +116,8 @@ void MainWindow::on_pushButton_clicked()
 
 void MainWindow::on_pushButton_2_clicked()
 {
-
-
+    ui->pushButton_2->setEnabled(false);
+    ui->checkBox->setChecked(false);
     QSqlQuery quest;
     int j, k, t = 1;
     int **arr;
@@ -143,80 +145,36 @@ void MainWindow::on_pushButton_2_clicked()
         quest.exec();
         t++;
     }
-    int count, trueCount = 0, helper = 999999999, sas = 0;
-    double *counter;
-    counter = new double[j*k];
-min = 2;
-max = -1;
-    for(int i = 0; i < j - 1; i++){
-        int tmp = j - (i + 1), mnoj = 1 + i;
-        while(tmp){
-            trueCount = 0;
-            count = 0;
-            for(int m = 0; m < k; m++){
-                int tmp2 = arr[i][m] - arr[mnoj][m];
-
-                if(arr[i][m] != -1 && arr[mnoj][m] != -1){
-                    if(abs(tmp2) == 10 || tmp2 == 0)   count++;
-                    if (count > helper) count = helper;
-                    trueCount++;
+    int count, trueCount = 0, wrongj[99] = { 0 }, maxDenominator = 0, minDenominator = k;
+        for(int i = 0; i < j - 1; i++){
+            int tmp = j - (i + 1), mnoj = 1 + i;
+            while(tmp){
+                count = 0;
+                trueCount = 0;
+                for(int m = 0; m < k; m++){
+                    int tmp2 = arr[i][m] - arr[mnoj][m];
+                    if(arr[i][m] != -1 && arr[mnoj][m] != -1){
+                        trueCount++;
+                        if(abs(tmp2) == 10 || tmp2 == 0){
+                            count++;
+                        }
+                        else wrongj[m] = m + 1;
+                    }
+                    else wrongj[m] = m + 1;
                 }
-            }
-            if (helper >= count) helper = count;
-            if (trueCount != 0) {
-                counter[sas] = double(count)/double(trueCount);
-                if (counter[sas] > max) max = counter[sas];
-                if (counter[sas] < min) min = counter[sas];
-                sas++;
-                tmp--;
-                mnoj++;
-            }
-            else {
-                tmp--;
-                mnoj++;
+                tmp --;
+                if (trueCount > maxDenominator) maxDenominator = trueCount;
+                if (trueCount < minDenominator) minDenominator = trueCount;
             }
         }
+        int divider = 0;
+    for (int i = 0; i < k; i++){
+        if (wrongj[i] == 0) divider++;
     }
-    for(int i = 0; i < j - 1; i++){
-        int tmp = j - (i + 1), mnoj = 1 + i;
-        while(tmp){
-            trueCount = 0;
-            count = 0;
-            for(int m = 0; m < k; m++){
-                int tmp2 = arr[i][m] - arr[mnoj][m];
-
-                if(arr[i][m] != -1 && arr[mnoj][m] != -1){
-                    if(abs(tmp2) == 10 || tmp2 == 0)   count++;
-                    if (count > helper) count = helper;
-                    trueCount++;
-                }
-            }
-            if (helper >= count) helper = count;
-            if (trueCount != 0) {
-                counter[sas] = double(count)/double(trueCount);
-                if (counter[sas] > max) max = counter[sas];
-                if (counter[sas] < min) min = counter[sas];
-                sas++;
-                tmp--;
-                mnoj++;
-            }
-            else {
-                tmp--;
-                mnoj++;
-            }
-        }
-    }
+    max = double(divider) / double(minDenominator);
+    min = double(divider) / double(maxDenominator);
+    memset(wrongj, 0, sizeof(wrongj));
 }
-
-
-
-
-
-
-
-
-
-
 
 void MainWindow::on_checkBox_toggled(bool checked)
 {
