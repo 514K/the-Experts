@@ -1,6 +1,6 @@
 <ui version="4.0">
  <class>Dialog</class>
- <widget class="QDialog" name="Dialog">
+ <widget name="Dialog" class="QDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
